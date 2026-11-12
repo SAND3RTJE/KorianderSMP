@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KorianderSMP – Survival-server voor Java en Bedrock</title>
+<meta name="description" content="KorianderSMP is een besloten survival-server voor vrienden, op Java én Bedrock. Bekijk het serveradres, de live status en foto’s uit de wereld.">
+<meta name="theme-color" content="#0f2a1d">
+<meta property="og:title" content="KorianderSMP">
+<meta property="og:description" content="Survival-server voor vrienden op Java én Bedrock. play.koriandersmp.nl">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://koriandersmp.nl/img/hero.webp">
+<meta property="og:locale" content="nl_NL">
+<link rel="preload" as="image" href="img/hero.webp" fetchpriority="high">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f2a1d; --forest:#16422c; --leaf:#3f9b5f; --mint:#d9efdf; --cream:#f7f4ec; --paper:#fffdf8;
+  --line:#e2dccb; --text:#1c2a22; --muted:#5d6b62; --gold:#e3a72f; --twitch:#7a4fd0; --discord:#5865f2;
+  --serif:"Fraunces",Georgia,serif; --sans:"Inter",system-ui,-apple-system,sans-serif;
+  --r:14px; --shadow:0 1px 2px rgba(15,42,29,.06),0 8px 24px rgba(15,42,29,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--cream);color:var(--text);font:400 1.0625rem/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:var(--forest)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;padding:8px 14px;border-radius:8px;z-index:20}
+.skip:focus{left:8px}
+
+/* Navigatie */
+header.nav{position:sticky;top:0;z-index:10;background:rgba(15,42,29,.96);backdrop-filter:blur(8px)}
+header.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;flex-wrap:wrap}
+.brand{font:700 1.35rem var(--serif);color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand span{color:var(--leaf)}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:4px;flex-wrap:wrap}
+nav a{display:block;color:#cfe3d6;text-decoration:none;font-weight:500;font-size:.95rem;padding:8px 12px;border-radius:8px}
+nav a:hover{background:rgba(255,255,255,.08);color:#fff}
+nav a.cta{background:var(--leaf);color:#06180e;font-weight:700}
+nav a.cta:hover{background:#52b374}
+
+/* Hero */
+.hero{background:linear-gradient(90deg,rgba(15,42,29,.94) 0,rgba(15,42,29,.72) 45%,rgba(15,42,29,.25) 100%),linear-gradient(0deg,rgba(15,42,29,.85) 0,transparent 40%),url(img/hero.webp) center/cover,var(--ink);color:#fff;padding:84px 0 96px}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+  padding:7px 14px;border-radius:99px;font-weight:600;font-size:.92rem}
+.dot{width:10px;height:10px;border-radius:50%;background:#8a9a90}
+.eyebrow.on .dot{background:#4be07f;box-shadow:0 0 0 4px rgba(75,224,127,.2)}
+.eyebrow.off .dot{background:#ef6a55}
+h1,h2,h3{font-family:var(--serif);line-height:1.12;margin:0;color:inherit}
+h1{font-size:clamp(2.8rem,8vw,5.2rem);margin:22px 0 16px;letter-spacing:-.01em}
+h1 em{font-style:normal;color:#7fd39a}
+.hero p.lead{font-size:1.25rem;color:#c3d8ca;max-width:46ch;margin:0 0 30px}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 1rem var(--sans);cursor:pointer;
+  padding:12px 20px;border-radius:10px;border:2px solid transparent;text-decoration:none;transition:transform .12s,background .15s}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--leaf);color:#06180e}.btn.primary:hover{background:#52b374}
+.btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}.btn.ghost:hover{background:rgba(255,255,255,.1)}
+.btn.discord{background:var(--discord);color:#fff}.btn.discord:hover{background:#6b77f5}
+.btn.twitch{background:var(--twitch);color:#fff}.btn.twitch:hover{background:#8b62e0}
+.btn.small{padding:7px 13px;font-size:.9rem;border-radius:8px}
+.btn.outline{background:#fff;color:var(--forest);border-color:var(--line)}.btn.outline:hover{border-color:var(--leaf)}
+
+/* Secties */
+section{padding:84px 0}
+section.alt{background:var(--paper);border-block:1px solid var(--line)}
+.kicker{font-weight:700;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf);margin:0 0 10px}
+h2{font-size:clamp(1.9rem,4.5vw,2.8rem);color:var(--ink);margin-bottom:12px}
+.sub{color:var(--muted);max-width:60ch;margin:0 0 40px}
+.pull{margin-top:-44px;position:relative;z-index:2;padding:0}
+
+/* Join-kaarten */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;box-shadow:var(--shadow)}
+.card h3{font-size:1.5rem;color:var(--ink)}
+.card .tag{color:var(--muted);font-size:.95rem;margin:2px 0 18px}
+.field{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:10px 10px 10px 14px;margin-top:10px}
+.field small{display:block;color:var(--muted);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.field code{font:600 1.1rem var(--sans);word-break:break-all}
+.card ol{margin:20px 0 0;padding-left:1.25em;color:var(--text)}
+.card ol li{margin-bottom:6px}
+.note{font-size:.92rem;color:var(--muted);margin:14px 0 0}
+.card .btn{margin-top:18px}
+
+/* Spelers */
+.players{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:0;padding:0}
+.players li{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:5px 16px 5px 5px;font-weight:600}
+.players img,.players .ph{width:30px;height:30px;border-radius:50%;image-rendering:pixelated;background:var(--mint)}
+.players .none{background:none;border:0;color:var(--muted);font-weight:400;padding:0}
+
+/* Stappen */
+.steps{list-style:none;counter-reset:s;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.steps li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.steps li:before{content:counter(s);display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  background:var(--forest);color:#fff;font:700 1.1rem var(--serif);margin-bottom:14px}
+.steps b{display:block;color:var(--ink);margin-bottom:4px}
+
+/* Galerij */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.shot{padding:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:zoom-in;background:#14101f;display:block;line-height:0}
+.shot.big{grid-column:1/-1}
+.shot img{width:100%;height:auto;display:block;transition:transform .4s}
+.shot:hover img{transform:scale(1.03)}
+.shot:not(.big) img{aspect-ratio:16/10;object-fit:cover}
+.shot.big img{aspect-ratio:21/9;object-fit:cover}
+figure.map{margin:40px 0 0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+figure.map img{width:100%;height:auto;display:block}
+figure.map figcaption{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 20px}
+figure.map figcaption span{display:block;color:var(--muted);font-size:.95rem}
+dialog#lb{border:0;padding:0;background:transparent;max-width:min(96vw,1400px);max-height:92vh;overflow:visible}
+dialog#lb::backdrop{background:rgba(5,15,10,.88)}
+dialog#lb img{width:100%;max-height:88vh;object-fit:contain;border-radius:10px;display:block}
+dialog#lb button{position:absolute;top:-14px;right:-14px;width:40px;height:40px;border-radius:50%;border:0;background:#fff;font-size:1.3rem;cursor:pointer}
+@media (max-width:700px){.gallery{grid-template-columns:1fr}.shot.big img{aspect-ratio:16/10}}
+
+/* Twitch */
+.tabs{display:inline-flex;gap:6px;background:#ece6d4;padding:5px;border-radius:12px;margin-bottom:18px}
+.tabs button{font:600 .98rem var(--sans);border:0;background:transparent;color:var(--muted);padding:9px 18px;border-radius:8px;cursor:pointer}
+.tabs button[aria-selected=true]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.stream{display:grid;grid-template-columns:3fr 1fr;gap:16px}
+.frame{position:relative;background:#14101f;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.frame.vid{aspect-ratio:16/9}
+.frame.chat{min-height:460px}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.consent{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:20px;color:#e4dcf5}
+.consent p{margin:0;font-size:.9rem;max-width:34ch;color:#b9add6}
+.stream-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+@media (max-width:900px){.stream{grid-template-columns:1fr}.frame.chat{min-height:420px}}
+
+/* Regels + FAQ */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:48px}
+.rules{list-style:none;margin:0;padding:0}
+.rules li{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.rules li:before{content:"✓";color:var(--leaf);font-weight:800}
+details{border-bottom:1px solid var(--line);padding:4px 0}
+summary{cursor:pointer;font-weight:600;padding:14px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:1.4rem;line-height:1;color:var(--leaf)}
+details[open] summary:after{content:"–"}
+details p{margin:0 0 16px;color:var(--muted)}
+
+/* Team */
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:720px}
+.person{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.avatar{width:56px;height:56px;border-radius:50%;background:var(--forest);color:#fff;display:grid;place-items:center;font:700 1.4rem var(--serif);flex:none}
+.person b{display:block;color:var(--ink)}
+.person a{font-size:.92rem}
+
+/* Footer */
+footer{background:var(--ink);color:#a9c1b2;padding:48px 0;font-size:.95rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px}
+footer a{color:#d6eadc}
+footer .brand{font-size:1.2rem}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;
+  font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:30}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:640px){section{padding:60px 0}.hero{padding:56px 0 80px}nav ul{gap:0}nav a{padding:8px 9px;font-size:.88rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#join">Ga naar de inhoud</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">🌿 Koriander<span>SMP</span></a>
+    <nav aria-label="Hoofdmenu">
+      <ul>
+        <li><a href="#join">Meedoen</a></li>
+        <li><a href="#wereld">Wereld</a></li>
+        <li><a href="#streams">Streams</a></li>
+        <li><a href="#regels">Regels</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a class="cta" href="https://discord.gg/Jcuf9hXg4H" target="_blank" rel="noopener">Discord</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow" id="status" role="status"><span class="dot"></span><span id="statusText">Status laden…</span></div>
+      <h1>Koriander<em>SMP</em></h1>
+      <p class="lead">Een survival-server voor vrienden, gerund door Fabian en Sander. Speel mee op Java én Bedrock.</p>
+      <div class="actions">
+        <a class="btn primary" href="#join">Zo join je</a>
+        <a class="btn ghost" href="#wereld">Bekijk de wereld</a>
+        <a class="btn discord" href="https://discord.gg/Jcuf9hXg4H" target="_blank" rel="noopener">Discord</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="join" class="pull">
+    <div class="wrap">
+      <div class="cards">
+        <article class="card" aria-labelledby="java-h">
+          <h3 id="java-h">Java Edition</h3>
+          <p class="tag">pc, Mac en Linux</p>
+          <div class="field"><div><small>Serveradres</small><code>play.koriandersmp.nl</code></div>
+            <button class="btn small primary" data-copy="play.koriandersmp.nl">Kopieer</button></div>
+          <ol>
+            <li>Open Minecraft en kies Multiplayer.</li>
+            <li>Kies Server toevoegen en plak het adres.</li>
+            <li>Kies de server en druk op Join.</li>
+          </ol>
+          <p class="note">Een poort invullen is niet nodig.</p>
+        </article>
+
+        <article class="card" aria-labelledby="bed-h">
+          <h3 id="bed-h">Bedrock Edition</h3>
+          <p class="tag">Windows, console, telefoon en tablet</p>
+          <div class="field"><div><small>Serveradres</small><code>play.koriandersmp.nl</code></div>
+            <button class="btn small primary" data-copy="play.koriandersmp.nl">Kopieer</button></div>
+          <div class="field"><div><small>Poort</small><code>25639</code></div>
+            <button class="btn small primary" data-copy="25639">Kopieer</button></div>
+          <ol>
+            <li>Ga naar Spelen, dan Servers, en kies Server toevoegen.</li>
+            <li>Vul adres en poort in en sla op.</li>
+            <li>Kies de server en druk op Spelen.</li>
+          </ol>
+          <a class="btn outline small" href="minecraft://connect/?serverUrl=play.koriandersmp.nl&serverPort=25639">Voeg toe in Minecraft</a>
+          <p class="note">Werkt de knop niet op jouw apparaat? Vul adres en poort zelf in. Bedrock-spelers krijgen een punt voor hun naam (bijvoorbeeld .Sander). Dat is normaal.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="kicker">Live</p>
+      <h2>Wie is er online?</h2>
+      <p class="sub" id="onlineSub">De lijst ververst elke minuut.</p>
+      <ul class="players" id="players" aria-live="polite"><li class="none">Spelers laden…</li></ul>
+    </div>
+  </section>
+
+  <section id="wereld" class="alt">
+    <div class="wrap">
+      <p class="kicker">Onze wereld</p>
+      <h2>Een kijkje op de server</h2>
+      <p class="sub">Een paar plekken uit de wereld waar we samen aan bouwen. Klik op een foto om hem groter te zien.</p>
+      <div class="gallery">
+        <button class="shot big" data-full="img/hero.webp"><img src="img/hero.webp" width="1920" height="1080" loading="lazy" alt="Een enorm bouwwerk van een gevleugelde figuur naast een paars portaal, boven een bos"></button>
+        <button class="shot" data-full="img/portaal.webp"><img src="img/portaal.webp" width="1400" height="788" loading="lazy" alt="Een stenen trap die leidt naar een gloeiend paars portaal"></button>
+        <button class="shot" data-full="img/hal.webp"><img src="img/hal.webp" width="1400" height="788" loading="lazy" alt="Een speler in zware wapenuitrusting in een grote hal met glazen dak"></button>
+        <button class="shot" data-full="img/hal-binnen.webp"><img src="img/hal-binnen.webp" width="1400" height="788" loading="lazy" alt="Het glazen dak en de hangende planten van de hal, van binnen gezien"></button>
+      </div>
+
+      <figure class="map">
+        <img src="img/kaart.webp" width="1500" height="665" loading="lazy" alt="Kaart van de KorianderSMP-wereld met eilanden, bossen en sneeuwgebieden">
+        <figcaption>
+          <div><b>De wereldkaart</b><span>Zo ziet onze wereld er van boven uit.</span></div>
+          <a class="btn primary small" id="mapLink" href="#" target="_blank" rel="noopener" hidden>Open de live kaart</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="streams">
+    <div class="wrap">
+      <p class="kicker">Twitch</p>
+      <h2>Kijk mee met de streams</h2>
+      <p class="sub">Fabian en Sander streamen af en toe vanaf de server. Kies een kanaal. De stream en chat laden pas nadat je erop klikt.</p>
+
+      <div class="tabs" role="tablist" aria-label="Kies een kanaal">
+        <button role="tab" id="tab-elitegooner37" aria-selected="true" data-ch="elitegooner37">Fabian</button>
+        <button role="tab" id="tab-sand3rtje" aria-selected="false" data-ch="sand3rtje">Sander</button>
+      </div>
+
+      <div class="stream">
+        <div class="frame vid" id="vid"></div>
+        <div class="frame chat" id="chat"></div>
+      </div>
+      <div class="stream-links">
+        <a class="btn twitch" id="openTwitch" href="https://www.twitch.tv/elitegooner37" target="_blank" rel="noopener">Open op Twitch</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="regels" class="alt">
+    <div class="wrap two">
+      <div>
+        <p class="kicker">Spelregels</p>
+        <h2>Zo houden we het gezellig</h2>
+        <!-- Pas deze regels aan -->
+        <ul class="rules">
+          <li>Wees aardig voor elkaar.</li>
+          <li>Geen grief, diefstal of cheats.</li>
+          <li>Twijfel je ergens over? Vraag het Fabian of Sander.</li>
+        </ul>
+      </div>
+      <div id="faq">
+        <p class="kicker">Veelgestelde vragen</p>
+        <h2>FAQ</h2>
+        <details><summary>Hoe kom ik op de server?</summary><p>De server is besloten. Fabian en Sander voegen zelf mensen toe die ze kennen. Wil je meespelen, laat het dan weten in de Discord.</p></details>
+        <details><summary>Welke versie heb ik nodig?</summary><p>Java 1.21 of hoger, of Bedrock. Bedrock-spelers joinen via Geyser.</p></details>
+        <details><summary>Ik kom er niet in, wat nu?</summary><p>Controleer of je naam klopt en of je al op de lijst staat. Op Bedrock zijn adres en poort allebei nodig. Lukt het dan nog niet, vraag het in de Discord.</p></details>
+        <details><summary>Waarom heb ik een punt voor mijn naam?</summary><p>Dat doet de server bij Bedrock-spelers om ze van Java-spelers te onderscheiden. Het is normaal.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="kicker">Achter de server</p>
+      <h2>Wie runt dit?</h2>
+      <div class="team" style="margin-top:28px">
+        <div class="person"><div class="avatar" aria-hidden="true">F</div><div><b>Fabian</b><a href="https://www.twitch.tv/elitegooner37" target="_blank" rel="noopener">twitch.tv/elitegooner37</a></div></div>
+        <div class="person"><div class="avatar" aria-hidden="true">S</div><div><b>Sander</b><a href="https://www.twitch.tv/sand3rtje" target="_blank" rel="noopener">twitch.tv/sand3rtje</a></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="#top">🌿 Koriander<span>SMP</span></a>
+      <p style="margin:10px 0 0">Draait op Java 1.21 en hoger, met Bedrock via Geyser.<br>Geen officieel Minecraft-product, niet goedgekeurd door of verbonden met Mojang of Microsoft.</p>
+    </div>
+    <div>
+      <a href="https://discord.gg/Jcuf9hXg4H" target="_blank" rel="noopener">Discord</a> ·
+      <a href="https://www.twitch.tv/elitegooner37" target="_blank" rel="noopener">Fabian</a> ·
+      <a href="https://www.twitch.tv/sand3rtje" target="_blank" rel="noopener">Sander</a>
+    </div>
+  </div>
+</footer>
+<dialog id="lb" aria-label="Grote foto"><img alt=""><button type="button" aria-label="Sluiten">✕</button></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const HOST = 'play.koriandersmp.nl';
+// Link naar de live wereldkaart (BlueMap, Dynmap of een openbare link van Mintservers). Leeg laten = knop blijft verborgen.
+const MAP_URL = 'https://map.koriandersmp.nl';
+if (MAP_URL) { const m = document.getElementById('mapLink'); m.href = MAP_URL; m.hidden = false; }
+
+// Foto's vergroten
+const lb = document.getElementById('lb'), lbImg = lb.querySelector('img');
+document.querySelectorAll('.shot').forEach(b => b.addEventListener('click', () => {
+  lbImg.src = b.dataset.full; lbImg.alt = b.querySelector('img').alt; lb.showModal();
+}));
+lb.addEventListener('click', e => { if (e.target !== lbImg) lb.close(); });
+
+// Kopieerknoppen
+const toast = document.getElementById('toast');
+document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(b.dataset.copy); toast.textContent = 'Gekopieerd: ' + b.dataset.copy; }
+  catch (e) { toast.textContent = 'Kopiëren mislukt, selecteer de tekst zelf'; }
+  toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1800);
+}));
+
+// Twitch: pas laden na een klik (sneller en privacyvriendelijker)
+const parent = location.hostname || 'localhost';
+const vid = document.getElementById('vid'), chat = document.getElementById('chat'), open = document.getElementById('openTwitch');
+const names = {elitegooner37: 'Fabian', sand3rtje: 'Sander'};
+let current = 'elitegooner37';
+function placeholder(ch){
+  vid.innerHTML = ''; chat.innerHTML = '';
+  const mk = (box, label) => {
+    const d = document.createElement('div'); d.className = 'consent';
+    const p = document.createElement('p'); p.textContent = 'Twitch plaatst eigen cookies zodra je de ' + label + ' laadt.';
+    const b = document.createElement('button'); b.className = 'btn twitch'; b.textContent = 'Laad stream en chat van ' + names[ch];
+    b.addEventListener('click', () => load(ch));
+    d.append(p, b); box.appendChild(d);
+  };
+  mk(vid, 'stream'); mk(chat, 'chat');
+}
+function load(ch){
+  vid.innerHTML = ''; chat.innerHTML = '';
+  const v = document.createElement('iframe'); v.title = 'Twitch-stream van ' + names[ch]; v.allowFullscreen = true;
+  v.src = 'https://player.twitch.tv/?channel=' + ch + '&parent=' + parent + '&muted=true&autoplay=false';
+  const c = document.createElement('iframe'); c.title = 'Twitch-chat van ' + names[ch];
+  c.src = 'https://www.twitch.tv/embed/' + ch + '/chat?parent=' + parent + '&darkpopout';
+  vid.appendChild(v); chat.appendChild(c);
+}
+document.querySelectorAll('.tabs [role=tab]').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tabs [role=tab]').forEach(x => x.setAttribute('aria-selected', x === t));
+  current = t.dataset.ch; open.href = 'https://www.twitch.tv/' + current; placeholder(current);
+}));
+placeholder(current);
+
+// Live status via mcstatus.io
+async function loadStatus(){
+  const box = document.getElementById('status'), txt = document.getElementById('statusText'), list = document.getElementById('players');
+  const say = m => { list.innerHTML = ''; const li = document.createElement('li'); li.className = 'none'; li.textContent = m; list.appendChild(li); };
+  try {
+    const r = await fetch('https://api.mcstatus.io/v2/status/java/' + HOST);
+    const d = await r.json();
+    box.classList.remove('on', 'off');
+    if (!d.online) { box.classList.add('off'); txt.textContent = 'Offline'; say('De server is offline.'); return; }
+    box.classList.add('on');
+    txt.textContent = 'Online · ' + d.players.online + ' van ' + d.players.max + ' spelers';
+    const list_ = (d.players.list || []).map(p => p.name_clean);
+    if (d.players.online === 0) { say('Er is nu niemand online.'); return; }
+    if (!list_.length) { say(d.players.online + ' speler(s) online.'); return; }
+    list.innerHTML = '';
+    list_.forEach(n => {
+      const li = document.createElement('li'), img = document.createElement('img');
+      img.alt = ''; img.loading = 'lazy'; img.width = img.height = 30;
+      img.src = 'https://mc-heads.net/avatar/' + encodeURIComponent(n.replace(/^\./, '')) + '/30';
+      img.onerror = () => { const s = document.createElement('span'); s.className = 'ph'; img.replaceWith(s); };
+      li.append(img, document.createTextNode(n)); list.appendChild(li);
+    });
+  } catch (e) { txt.textContent = 'Status niet beschikbaar'; say('Spelerslijst niet beschikbaar.'); }
+}
+loadStatus(); setInterval(loadStatus, 60000);
+</script>
+</body>
+</html>
