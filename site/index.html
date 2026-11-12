@@ -37,7 +37,7 @@ a{color:var(--forest)}
 header.nav{position:sticky;top:0;z-index:10;background:rgba(15,42,29,.96);backdrop-filter:blur(8px)}
 header.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;flex-wrap:wrap}
 .brand{font:700 1.35rem var(--serif);color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px}
-.brand span{color:var(--leaf)}
+.brand b{color:var(--leaf);font-weight:inherit}
 nav ul{list-style:none;margin:0;padding:0;display:flex;gap:4px;flex-wrap:wrap}
 nav a{display:block;color:#cfe3d6;text-decoration:none;font-weight:500;font-size:.95rem;padding:8px 12px;border-radius:8px}
 nav a:hover{background:rgba(255,255,255,.08);color:#fff}
@@ -45,7 +45,10 @@ nav a.cta{background:var(--leaf);color:#06180e;font-weight:700}
 nav a.cta:hover{background:#52b374}
 
 /* Hero */
-.hero{background:linear-gradient(90deg,rgba(15,42,29,.94) 0,rgba(15,42,29,.72) 45%,rgba(15,42,29,.25) 100%),linear-gradient(0deg,rgba(15,42,29,.85) 0,transparent 40%),url(img/hero.webp) center/cover,var(--ink);color:#fff;padding:84px 0 96px}
+.hero{position:relative;overflow:hidden;background:var(--ink);color:#fff;padding:84px 0 96px}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% center}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,42,29,.92) 0,rgba(15,42,29,.62) 50%,rgba(15,42,29,.2) 100%),linear-gradient(0deg,rgba(15,42,29,.8) 0,transparent 40%)}
+.hero .wrap{position:relative;z-index:1}
 .hero .eyebrow{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
   padding:7px 14px;border-radius:99px;font-weight:600;font-size:.92rem}
 .dot{width:10px;height:10px;border-radius:50%;background:#8a9a90}
@@ -56,6 +59,7 @@ h1{font-size:clamp(2.8rem,8vw,5.2rem);margin:22px 0 16px;letter-spacing:-.01em}
 h1 em{font-style:normal;color:#7fd39a}
 .hero p.lead{font-size:1.25rem;color:#c3d8ca;max-width:46ch;margin:0 0 30px}
 .actions{display:flex;flex-wrap:wrap;gap:12px}
+.actions .btn{flex:1 1 auto}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 1rem var(--sans);cursor:pointer;
   padding:12px 20px;border-radius:10px;border:2px solid transparent;text-decoration:none;transition:transform .12s,background .15s}
 .btn:active{transform:translateY(1px)}
@@ -101,13 +105,13 @@ h2{font-size:clamp(1.9rem,4.5vw,2.8rem);color:var(--ink);margin-bottom:12px}
 .steps b{display:block;color:var(--ink);margin-bottom:4px}
 
 /* Galerij */
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .shot{padding:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:zoom-in;background:#14101f;display:block;line-height:0}
 .shot.big{grid-column:1/-1}
 .shot img{width:100%;height:auto;display:block;transition:transform .4s}
 .shot:hover img{transform:scale(1.03)}
 .shot:not(.big) img{aspect-ratio:16/10;object-fit:cover}
-.shot.big img{aspect-ratio:21/9;object-fit:cover}
+.shot.big img{aspect-ratio:2/1;object-fit:cover}
 figure.map{margin:40px 0 0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;box-shadow:var(--shadow)}
 figure.map img{width:100%;height:auto;display:block}
 figure.map figcaption{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 20px}
@@ -160,7 +164,22 @@ footer .brand{font-size:1.2rem}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;
   font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:30}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-@media (max-width:640px){section{padding:60px 0}.hero{padding:56px 0 80px}nav ul{gap:0}nav a{padding:8px 9px;font-size:.88rem}}
+#onlineSub{margin-bottom:22px}
+@media (max-width:640px){
+  section{padding:60px 0}.hero{padding:56px 0 80px}
+  .hero:after{background:linear-gradient(180deg,rgba(15,42,29,.8) 0,rgba(15,42,29,.6) 45%,rgba(15,42,29,.94) 100%)}
+  header.nav .wrap{min-height:56px;padding-top:6px;padding-bottom:6px}
+  nav{width:100%;margin:0 -4px}
+  nav ul{flex-wrap:nowrap;overflow-x:auto;gap:0;scrollbar-width:none;padding-bottom:2px}
+  nav ul::-webkit-scrollbar{display:none}
+  nav a{padding:8px 10px;font-size:.9rem;white-space:nowrap}
+  nav li:nth-child(4){display:none}
+  .actions .btn.discord{flex-basis:100%}
+  .card{padding:22px}
+  .field{flex-direction:column;align-items:stretch;gap:8px;padding:12px 14px}
+  .field code{white-space:nowrap;word-break:normal;font-size:1.05rem}
+  .field .btn{width:100%}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -169,7 +188,7 @@ footer .brand{font-size:1.2rem}
 
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top">🌿 Koriander<span>SMP</span></a>
+    <a class="brand" href="#top"><span aria-hidden="true">🌿</span><span>Koriander<b>SMP</b></span></a>
     <nav aria-label="Hoofdmenu">
       <ul>
         <li><a href="#join">Meedoen</a></li>
@@ -185,6 +204,7 @@ footer .brand{font-size:1.2rem}
 
 <main id="top">
   <div class="hero">
+    <img class="hero-bg" src="img/hero.webp" alt="" width="1920" height="1080" fetchpriority="high" decoding="async">
     <div class="wrap">
       <div class="eyebrow" id="status" role="status"><span class="dot"></span><span id="statusText">Status laden…</span></div>
       <h1>Koriander<em>SMP</em></h1>
@@ -247,14 +267,13 @@ footer .brand{font-size:1.2rem}
       <h2>Een kijkje op de server</h2>
       <p class="sub">Een paar plekken uit de wereld waar we samen aan bouwen. Klik op een foto om hem groter te zien.</p>
       <div class="gallery">
-        <button class="shot big" data-full="img/hero.webp"><img src="img/hero.webp" width="1920" height="1080" loading="lazy" alt="Een enorm bouwwerk van een gevleugelde figuur naast een paars portaal, boven een bos"></button>
-        <button class="shot" data-full="img/portaal.webp"><img src="img/portaal.webp" width="1400" height="788" loading="lazy" alt="Een stenen trap die leidt naar een gloeiend paars portaal"></button>
+        <button class="shot big" data-full="img/portaal.webp"><img src="img/portaal.webp" width="1400" height="788" loading="lazy" alt="Een stenen trap die leidt naar een gloeiend paars portaal"></button>
         <button class="shot" data-full="img/hal.webp"><img src="img/hal.webp" width="1400" height="788" loading="lazy" alt="Een speler in zware wapenuitrusting in een grote hal met glazen dak"></button>
         <button class="shot" data-full="img/hal-binnen.webp"><img src="img/hal-binnen.webp" width="1400" height="788" loading="lazy" alt="Het glazen dak en de hangende planten van de hal, van binnen gezien"></button>
       </div>
 
       <figure class="map">
-        <img src="img/kaart.webp" width="1500" height="665" loading="lazy" alt="Kaart van de KorianderSMP-wereld met eilanden, bossen en sneeuwgebieden">
+        <img src="img/kaart.webp" width="1500" height="684" loading="lazy" alt="Kaart van de KorianderSMP-wereld met eilanden, bossen en sneeuwgebieden">
         <figcaption>
           <div><b>De wereldkaart</b><span>Zo ziet onze wereld er van boven uit.</span></div>
           <a class="btn primary small" id="mapLink" href="#" target="_blank" rel="noopener" hidden>Open de live kaart</a>
@@ -322,7 +341,7 @@ footer .brand{font-size:1.2rem}
 <footer>
   <div class="wrap">
     <div>
-      <a class="brand" href="#top">🌿 Koriander<span>SMP</span></a>
+      <a class="brand" href="#top"><span aria-hidden="true">🌿</span><span>Koriander<b>SMP</b></span></a>
       <p style="margin:10px 0 0">Draait op Java 1.21 en hoger, met Bedrock via Geyser.<br>Geen officieel Minecraft-product, niet goedgekeurd door of verbonden met Mojang of Microsoft.</p>
     </div>
     <div>
